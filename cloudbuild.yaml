@@ -2,7 +2,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 
-           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.', 'pwd', 'ls -la', 'whoami', 'echo $PROJECT_ID', 'echo $REPO_NAME', 'echo $SHORT_SHA']
+           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push',  'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA']
