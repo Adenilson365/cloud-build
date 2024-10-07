@@ -7,6 +7,13 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push',  'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA']
 
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+      sed -i 's/image: flask-app:latest/us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA/g' deployment.yaml
+
 - name: "gcr.io/cloud-builders/gke-deploy"
   args:
   - run
