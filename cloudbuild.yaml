@@ -13,5 +13,9 @@ steps:
            '--region', 'us-central1', '--platform', 'managed', 
            '--allow-unauthenticated']
 
+options:
+  logging: NONE
+
+
 images:
   - us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
