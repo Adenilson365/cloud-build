@@ -13,7 +13,7 @@ steps:
   - --filename=${_DEPLOYMENT}
   - --image=${_IMAGE}
   - --location=${_LOCATION}
-  - --cluster=a${_CLUSTER}
+  - --cluster=${_CLUSTER}
 
 
 options:
