@@ -1,31 +1,31 @@
 steps:
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 
-           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 
+          'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push',  'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA']
 
-  - name: "gcr.io/cloud-builders/gke-deploy"
-    args:
-    - run
-    - --filename=${_DEPLOYMENT}
-    - --image=${_IMAGE}
-    - --location=${_LOCATION}
-    - --cluster=a${_CLUSTER}
+- name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=${_DEPLOYMENT}
+  - --image=${_IMAGE}
+  - --location=${_LOCATION}
+  - --cluster=a${_CLUSTER}
 
-    substitutions:
-      _IMAGE: us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
-      _DEPLOYMENT: deployment.yaml
-      _LOCATION: us-east1
-      _CLUSTER: autopilot-cluster-2
-
-    images:
-    - us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
+substitutions:
+  _IMAGE: 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA'
+  _DEPLOYMENT: 'deployment.yaml'
+  _LOCATION: 'us-east1'
+  _CLUSTER: 'autopilot-cluster-2'
+
+images:
+- us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
 
 
