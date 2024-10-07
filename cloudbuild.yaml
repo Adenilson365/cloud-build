@@ -11,7 +11,7 @@ steps:
   args:
   - run
   - --filename=${_DEPLOYMENT}
-  - --image=${_IMAGE}
+  - --image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
   - --location=${_LOCATION}
   - --cluster=${_CLUSTER}
 
