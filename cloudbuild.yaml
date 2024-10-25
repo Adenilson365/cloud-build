@@ -23,15 +23,6 @@ steps:
   - --location=${_LOCATION}
   - --cluster=${_CLUSTER}
 
-- name: "gcr.io/cloud-builders/helm"
-  args:
-  - upgrade
-  - --install
-  - --wait
-  - --namespace=default
-  - --set=image.tag=$SHORT_SHA
-  - flask-app
-  - ./helm-chart
 
 options:
   logging: CLOUD_LOGGING_ONLY
