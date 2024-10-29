@@ -21,7 +21,7 @@ steps:
   - --filename=${_DEPLOYMENT}
   - --image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
   - --location=${_LOCATION}
-  - --cluster=${_CLUSTER}
+  - --cluster=$_CLUSTER
 
 
 options:
@@ -31,7 +31,6 @@ substitutions:
   _IMAGE: 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA'
   _DEPLOYMENT: 'deployment.yaml'
   _LOCATION: 'us-east1'
-  _CLUSTER: 'autopilot-cluster-2'
 
 images:
 - us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
