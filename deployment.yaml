@@ -32,3 +32,19 @@ spec:
       port: 80
       targetPort: 8080
   type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-app
+spec:
+  rules:
+  - host: api.konzelmann.com.br
+    http:
+      paths: "/teste"
+      pathType: Prefix
+      backend:
+        service:
+          name: flask-app
+          port:
+            number: 80
