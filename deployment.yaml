@@ -97,14 +97,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: flask-app
+            name: web
             port:
               number: 80
-      - path: /web
+      - path: /flask
         pathType: ImplementationSpecific
         backend:
           service:
-            name: web
+            name: flask-app
             port:
               number: 80
 
