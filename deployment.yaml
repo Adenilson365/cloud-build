@@ -43,10 +43,17 @@ spec:
   - host: api.konzelmann.com.br
     http:
       paths:
-      - path: "/teste"
+      - path: /
         pathType: Prefix
         backend:
           service:
             name: flask-app
+            port:
+              number: 80
+      - path: /web
+        pathType: Prefix
+        backend:
+          service:
+            name: web
             port:
               number: 80
