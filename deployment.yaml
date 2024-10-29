@@ -38,13 +38,15 @@ kind: Ingress
 metadata:
   name: flask-app
 spec:
+  ingressClassName: nginx
   rules:
   - host: api.konzelmann.com.br
     http:
-      paths: "/teste"
-      pathType: Prefix
-      backend:
-        service:
-          name: flask-app
-          port:
-            number: 80
+      paths:
+      - path: "/teste"
+        pathType: Prefix
+        backend:
+          service:
+            name: flask-app
+            port:
+              number: 80
