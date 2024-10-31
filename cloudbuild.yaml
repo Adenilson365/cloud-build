@@ -1,6 +1,10 @@
 steps:
 
 - name: 'gcr.io/cloud-builders/docker'
+  id: 'build'
+  volumes:
+  - name: 'ssh'
+    path: '/root/.ssh'
   args: ['build', '-t', 
           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
 
@@ -18,23 +22,28 @@ steps:
       echo $msg
       echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
       echo $(basename $REPO_FULL_NAME)
+      echo ${SHORT_SHA} >> /root/.ssh/version.txt
      
 
 
-- name: "gcr.io/cloud-builders/gke-deploy"
-  args:
-  - run
-  - --filename=${_DEPLOYMENT}
-  - --image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
-  - --location=${_LOCATION}
-  - --cluster=$_CLUSTER
+#- name: "gcr.io/cloud-builders/gke-deploy"
+  #args:
+  #- run
+  #- --filename=${_DEPLOYMENT}
+  #- --image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
+  #- --location=${_LOCATION}
+  #- --cluster=$_CLUSTER
 
 - name: 'gcr.io/cloud-builders/git'
   id: 'linux'
+  volumes:
+  - name: 'ssh'
+    path: '/root/.ssh'
   entrypoint: 'bash'
   args: 
   - '-c'
   - |
+    cat /root/.ssh/version.txt
     mkdir -p ~/.ssh
     echo "${_SSH_KEY}" > ~/.ssh/id_rsa
     ls -la ~/.ssh/
