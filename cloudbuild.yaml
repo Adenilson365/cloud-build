@@ -57,7 +57,7 @@ steps:
       git remote -v
       git branch --list
       git commit -m "active:$(basename $REPO_FULL_NAME):${SHORT_SHA}"   
-      git push -u origin main
+      git push
 
 options:
   logging: CLOUD_LOGGING_ONLY
