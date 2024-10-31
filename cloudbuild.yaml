@@ -35,7 +35,7 @@ steps:
   args: 
   - '-c'
   - |
-    mkdir -R ~/.ssh
+    mkdir -p ~/.ssh
     cat $_SSH_KEY > ~/.ssh/id_rsa
     ls -la ~/.ssh/
     chmod 600 ~/.ssh/id_rsa
