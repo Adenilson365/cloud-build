@@ -16,6 +16,7 @@ steps:
   args:
     - '-c'
     - |
+        mkdir -p /ssh
         sed -i "s|image: flask-app:latest|image: us-central1-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/hello-world-python:${SHORT_SHA}|g" deployment.yaml
         msg=$(git log -1 --pretty=%s)
         echo $msg
@@ -36,28 +37,22 @@ steps:
       cat /ssh/version.txt
       mkdir -p ~/.ssh
       echo "${_SSH_KEY}" > ~/.ssh/id_rsa
-      ls -la ~/.ssh/
       chmod 600 ~/.ssh/id_rsa
 
       eval "$(ssh-agent -s)"
       ssh-add ~/.ssh/id_rsa
 
       ssh-keyscan github.com >> ~/.ssh/known_hosts
-      echo "lendo known_hosts"
-      cat ~/.ssh/known_hosts
-
 
       git config --global user.email "adekonzelmann@gmail.com"
-      git config --global user.name "Adenilson365"    
+      git config --global user.name "Cloud Build"    
       git clone git@github.com:Adenilson365/testes-helm.git
       cd ./testes-helm
-      git pull origin main
+      git pull origin main || git pull origin master  # Sincroniza com o repositório remoto na branch correta
       echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" >> version.txt
       git add ./version.txt
-      git remote -v
-      git branch --list
       git commit -m "active:$(basename $REPO_FULL_NAME):${SHORT_SHA}"   
-      git push -u origin master 
+      git push origin main || git push origin master
 
 options:
   logging: CLOUD_LOGGING_ONLY
