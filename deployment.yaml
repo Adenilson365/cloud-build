@@ -19,6 +19,13 @@ spec:
         image: flask-app:latest
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 250m
+            memory: 250Mi
 ---
 apiVersion: v1 
 kind: Service
@@ -31,7 +38,50 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-  type: LoadBalancer
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: nginx:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 250m
+            memory: 250Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -47,13 +97,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: flask-app
-            port:
-              number: 80
-      - path: /web
-        pathType: Prefix
-        backend:
-          service:
             name: web
             port:
               number: 80
+      - path: /flask
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: flask-app
+            port:
+              number: 80
+
