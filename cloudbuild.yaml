@@ -1,9 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   id: 'build'
-  volumes:
-    - name: 'ssh'
-      path: '/ssh'
   args: ['build', '-t', 
           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
 
@@ -12,6 +9,9 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   id: 'update-deployment'
+  volumes:
+    - name: 'ssh'
+      path: '/ssh'
   entrypoint: 'bash'
   args:
     - '-c'
@@ -21,7 +21,6 @@ steps:
         echo $msg
         echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
         echo $(basename $REPO_FULL_NAME)
-        touch /ssh/version.txt
         echo ${SHORT_SHA} >> /ssh/version.txt
 
 - name: 'gcr.io/cloud-builders/git'
