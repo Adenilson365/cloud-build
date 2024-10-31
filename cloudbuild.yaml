@@ -42,7 +42,11 @@ steps:
     ssh-keyscan github.com >> ~/.ssh/known_hosts
     git clone git@github.com:Adenilson365/testes-helm.git
     cd ./testes-helm
-    ls -la
+    echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" >> version.txt
+    git add  ./version.txt
+    git commit -m "active:$(basename $REPO_FULL_NAME):${SHORT_SHA}"   
+    git push origin main
+    
 
 options:
   logging: CLOUD_LOGGING_ONLY
