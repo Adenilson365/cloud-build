@@ -36,11 +36,14 @@ steps:
   - '-c'
   - |
     mkdir -p ~/.ssh
-    echo "${_SSH_KEY}" > ~/.ssh/id_rsa
+    echo "${_SSH_KEY}" | base64 -d > ~/.ssh/id_rsa
     ls -la ~/.ssh/
     chmod 600 ~/.ssh/id_rsa
+
     ssh-keyscan github.com >> ~/.ssh/known_hosts
-    ssh -T git@github.com
+    cat ~/.ssh/known_hosts
+    ssh -o "StrictHostKeyChecking=no" -T git@github.com || exit 1
+
     git config --global user.email "adekonzelmann@gmail.com"
     git config --global user.name "Cloud Build"    
     git clone git@github.com:Adenilson365/testes-helm.git
