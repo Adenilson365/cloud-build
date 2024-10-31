@@ -45,7 +45,7 @@ steps:
       ssh-keyscan github.com >> ~/.ssh/known_hosts
       echo "lendo known_hosts"
       cat ~/.ssh/known_hosts
-      ssh -o "StrictHostKeyChecking=no" -T git@github.com || exit 1
+
 
       git config --global user.email "adekonzelmann@gmail.com"
       git config --global user.name "Cloud Build"    
