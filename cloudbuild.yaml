@@ -16,12 +16,9 @@ steps:
       sed -i "s|image: flask-app:latest|image: us-central1-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/hello-world-python:${SHORT_SHA}|g" deployment.yaml
       msg=$(git log -1 --pretty=%s)
       echo $msg
-      echo "active:$msg:${REPO_NAME}:${SHORT_SHA}" 
-      echo $(pwd)
-      echo $(ls -l)
-      echo $(cat deployment.yaml)
-      echo "$REPO_FULL_NAME"
-      echo "$_HEAD_REPO_URL"
+      echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
+      echo $(basename $REPO_FULL_NAME)
+     
 
 
 - name: "gcr.io/cloud-builders/gke-deploy"
