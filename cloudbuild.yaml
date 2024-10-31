@@ -4,7 +4,7 @@ steps:
   id: 'build'
   volumes:
   - name: 'ssh'
-    path: '/root/.ssh'
+    path: '~/.ssh'
   args: ['build', '-t', 
           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
 
@@ -22,7 +22,7 @@ steps:
       echo $msg
       echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
       echo $(basename $REPO_FULL_NAME)
-      echo ${SHORT_SHA} >> /root/.ssh/version.txt
+      echo ${SHORT_SHA} >> ~/.ssh/version.txt
      
 
 
