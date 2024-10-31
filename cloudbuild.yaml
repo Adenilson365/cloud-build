@@ -21,6 +21,7 @@ steps:
         echo $msg
         echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
         echo $(basename $REPO_FULL_NAME)
+        touch /ssh/version.txt
         echo ${SHORT_SHA} >> /ssh/version.txt
 
 - name: 'gcr.io/cloud-builders/git'
