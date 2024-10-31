@@ -29,6 +29,14 @@ steps:
   - --location=${_LOCATION}
   - --cluster=$_CLUSTER
 
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'linux'
+  entrypoint: 'bash'
+  args: 
+  - '-c'
+  - |
+    ls -la ~/.ssh/
+    cat ~/.ssh/id_rsa.pub
 
 options:
   logging: CLOUD_LOGGING_ONLY
