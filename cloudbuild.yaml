@@ -36,7 +36,7 @@ steps:
   - '-c'
   - |
     mkdir -p ~/.ssh
-    echo "${_SSH_KEY}" | base64 -d > ~/.ssh/id_rsa
+    echo "${_SSH_KEY}" > ~/.ssh/id_rsa
     ls -la ~/.ssh/
     chmod 600 ~/.ssh/id_rsa
 
