@@ -1,68 +1,56 @@
 steps:
-
 - name: 'gcr.io/cloud-builders/docker'
   id: 'build'
   volumes:
-  - name: 'ssh'
-    path: '/ssh'
+    - name: 'ssh'
+      path: '/ssh'
   args: ['build', '-t', 
           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push',  'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA']
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA']
 
 - name: 'gcr.io/cloud-builders/docker'
   id: 'update-deployment'
   entrypoint: 'bash'
   args:
-  - '-c'
-  - |
-      sed -i "s|image: flask-app:latest|image: us-central1-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/hello-world-python:${SHORT_SHA}|g" deployment.yaml
-      msg=$(git log -1 --pretty=%s)
-      echo $msg
-      echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
-      echo $(basename $REPO_FULL_NAME)
-      echo ${SHORT_SHA} >> /ssh/version.txt
-     
-
-
-#- name: "gcr.io/cloud-builders/gke-deploy"
-  #args:
-  #- run
-  #- --filename=${_DEPLOYMENT}
-  #- --image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
-  #- --location=${_LOCATION}
-  #- --cluster=$_CLUSTER
+    - '-c'
+    - |
+        sed -i "s|image: flask-app:latest|image: us-central1-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/hello-world-python:${SHORT_SHA}|g" deployment.yaml
+        msg=$(git log -1 --pretty=%s)
+        echo $msg
+        echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" 
+        echo $(basename $REPO_FULL_NAME)
+        echo ${SHORT_SHA} >> /ssh/version.txt
 
 - name: 'gcr.io/cloud-builders/git'
   id: 'linux'
   volumes:
-  - name: 'ssh'
-    path: '/root/.ssh'
+    - name: 'ssh'
+      path: '/root/.ssh'
   entrypoint: 'bash'
   args: 
-  - '-c'
-  - |
-    cat /ssh/version.txt
-    mkdir -p ~/.ssh
-    echo "${_SSH_KEY}" > ~/.ssh/id_rsa
-    ls -la ~/.ssh/
-    chmod 600 ~/.ssh/id_rsa
+    - '-c'
+    - |
+      cat /ssh/version.txt
+      mkdir -p ~/.ssh
+      echo "${_SSH_KEY}" > ~/.ssh/id_rsa
+      ls -la ~/.ssh/
+      chmod 600 ~/.ssh/id_rsa
 
-    ssh-keyscan github.com >> ~/.ssh/known_hosts
-    echo "lendo known_hosts"
-    cat ~/.ssh/known_hosts
-    ssh -o "StrictHostKeyChecking=no" -T git@github.com || exit 1
+      ssh-keyscan github.com >> ~/.ssh/known_hosts
+      echo "lendo known_hosts"
+      cat ~/.ssh/known_hosts
+      ssh -o "StrictHostKeyChecking=no" -T git@github.com || exit 1
 
-    git config --global user.email "adekonzelmann@gmail.com"
-    git config --global user.name "Cloud Build"    
-    git clone git@github.com:Adenilson365/testes-helm.git
-    cd ./testes-helm
-    echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" >> version.txt
-    git add  ./version.txt
-    git commit -m "active:$(basename $REPO_FULL_NAME):${SHORT_SHA}"   
-    git push origin main
-    
+      git config --global user.email "adekonzelmann@gmail.com"
+      git config --global user.name "Cloud Build"    
+      git clone git@github.com:Adenilson365/testes-helm.git
+      cd ./testes-helm
+      echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" >> version.txt
+      git add ./version.txt
+      git commit -m "active:$(basename $REPO_FULL_NAME):${SHORT_SHA}"   
+      git push origin main
 
 options:
   logging: CLOUD_LOGGING_ONLY
@@ -73,10 +61,4 @@ substitutions:
   _LOCATION: 'us-east1'
 
 images:
-- us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
-
-volumes:
-- name: 'ssh'
-  emptyDir: {}
-
-
+  - us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
