@@ -54,8 +54,9 @@ steps:
       git pull origin main
       echo "active:$msg:$(basename $REPO_FULL_NAME):${SHORT_SHA}" >> version.txt
       git add ./version.txt
+      git remote -v
       git commit -m "active:$(basename $REPO_FULL_NAME):${SHORT_SHA}"   
-      git push origin main
+      git push -u origin main
 
 options:
   logging: CLOUD_LOGGING_ONLY
