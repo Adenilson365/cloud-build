@@ -48,7 +48,7 @@ steps:
 
 
       git config --global user.email "adekonzelmann@gmail.com"
-      git config --global user.name "Cloud Build"    
+      git config --global user.name "Adenilson365"    
       git clone git@github.com:Adenilson365/testes-helm.git
       cd ./testes-helm
       git pull origin main
