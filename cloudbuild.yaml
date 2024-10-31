@@ -17,6 +17,11 @@ steps:
       msg=$(git log -1 --pretty=%s)
       echo $msg
       echo "active:$msg:${REPO_NAME}:${SHORT_SHA}" 
+      echo $(pwd)
+      echo $(ls -l)
+      echo $(cat deployment.yaml)
+      echo "$REPO_FULL_NAME"
+      echo "$_HEAD_REPO_URL"
 
 
 - name: "gcr.io/cloud-builders/gke-deploy"
