@@ -55,6 +55,7 @@ steps:
       git add ./version.txt
       git commit -m "active:msg"   
       git push origin main
+      ls
 
 options:
   logging: CLOUD_LOGGING_ONLY
